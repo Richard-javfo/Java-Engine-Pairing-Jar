@@ -25,9 +25,9 @@ import trf.impl.TournamentPlayerImpl;
  * @author DP
  */
 public interface TrfParser {
-    
+
     static TournamentState parse(InputStream inputStream) {
-        
+
         Map<Integer, TournamentPlayer> players = new HashMap<>();
         TournamentInfo info = new TournamentInfoImpl(players);
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
@@ -45,7 +45,7 @@ public interface TrfParser {
                     }
                 } else {
                     // Alles andere geht an die Info-Logik (012, XXR, etc.)
-                    ((TournamentInfoImpl)info).parseHeaderLine(line);
+                    ((TournamentInfoImpl) info).parseHeaderLine(line);
                 }
             }
         } catch (IOException e) {
@@ -61,8 +61,9 @@ public interface TrfParser {
 
         for (TournamentPlayer p : players.values()) {
 
-            if(p.getRounds()== null || p.getRounds().size()==0)
+            if (p.getRounds() == null || p.getRounds().size() == 0) {
                 return tournamentState;
+            }
             Round lastRound = p.getRounds().getLast();
 
             if (lastRound.result == '1' || lastRound.result == '=' || lastRound.result == '0') {
@@ -156,7 +157,4 @@ public interface TrfParser {
         }
     }
 
-    
-    
-    
 }
