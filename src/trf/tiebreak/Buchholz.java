@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package trf.impl.tiebreak;
+package trf.tiebreak;
 
 /**
  *
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import trf.api.TournamentPlayer;
 
-import trf.impl.TournamentPlayerImpl;
+import trf.impl.JavaTournamentPlayer;
 
 public class Buchholz extends FideTieBreakService {
 

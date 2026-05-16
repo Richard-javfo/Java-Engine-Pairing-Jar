@@ -4,10 +4,10 @@
  */
 package trf.api;
 
-import trf.impl.TournamentPlayerImpl;
+import trf.impl.JavaTournamentPlayer;
 import java.util.List;
 import java.util.Map;
-import trf.impl.tiebreak.TiebreakStrategy;
+import trf.tiebreak.TiebreakStrategy;
 
 
 /**

@@ -157,7 +157,7 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
             for (int i = 0; i < players.size(); i++) {
                 TournamentPlayer p = players.get(i);
                 //p.setActualRank(i + 1);
-//                if (p.getStartRank() == TournamentPlayerImpl.NO_START_RANK) {
+//                if (p.getStartRank() == JavaTournamentPlayer.NO_START_RANK) {
 //                    p.setStartRank(p.getActualRank());
 //                }
                 p.calculatePoints();
@@ -289,7 +289,7 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
 
     }
 
-    private void appendPlayerLine002(TournamentPlayerImpl p, StringBuilder sb) {
+    private void appendPlayerLine002(JavaTournamentPlayer p, StringBuilder sb) {
         if (!p.getRounds().isEmpty()) {
             // "%4d %c %c"
 

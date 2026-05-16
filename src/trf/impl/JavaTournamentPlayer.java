@@ -15,7 +15,7 @@ import trf.impl.TRFJavafoPairingProvider;
  *
  * @author DP
  */
-public class TournamentPlayerImpl implements TournamentPlayer{
+public class JavaTournamentPlayer implements TournamentPlayer{
 
     //gender title name                       elo country fideId  birthYear
     //m  g Mirzoev Azer                      2527 AZE    13400304 1978
@@ -46,25 +46,25 @@ public class TournamentPlayerImpl implements TournamentPlayer{
 
     private List<Round> rounds;
 
-    public TournamentPlayerImpl(int rounds) {
+    public JavaTournamentPlayer(int rounds) {
         this.rounds = new ArrayList(rounds);
         this.startRank = NO_START_RANK;
     }
     
-     public TournamentPlayerImpl(int startRank,String name,int rounds) {
+     public JavaTournamentPlayer(int startRank,String name,int rounds) {
         this.rounds = new ArrayList(rounds);
         this.startRank = startRank;
         this.name = name;
     }
     
-    public TournamentPlayerImpl(String spieler_A, int elo, int nationalElo) {
+    public JavaTournamentPlayer(String spieler_A, int elo, int nationalElo) {
         
         this(7);
         this.elo = elo;
         this.nationalElo = nationalElo;
     }
 
-    public TournamentPlayerImpl() {
+    public JavaTournamentPlayer() {
     }
 
     public String getStateString() {

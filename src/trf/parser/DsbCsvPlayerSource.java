@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import trf.api.PlayerLoader;
 import trf.api.Round;
-import trf.impl.TournamentPlayerImpl;
+import trf.impl.JavaTournamentPlayer;
 
 /**
  *
@@ -22,8 +22,8 @@ import trf.impl.TournamentPlayerImpl;
 public class DsbCsvPlayerSource implements PlayerLoader {
 
     @Override
-    public List<TournamentPlayerImpl> loadPlayers(InputStream input, RatingMode mode) {
-        List<TournamentPlayerImpl> players = new ArrayList<>();
+    public List<JavaTournamentPlayer> loadPlayers(InputStream input, RatingMode mode) {
+        List<JavaTournamentPlayer> players = new ArrayList<>();
         // UTF-8 ist wichtig für Umlaute in Spielernamen
         InputStreamReader isr = new InputStreamReader(input);
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
@@ -47,7 +47,7 @@ public class DsbCsvPlayerSource implements PlayerLoader {
                 String[] cols = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
                 if (cols.length >= 15) {
-                    TournamentPlayerImpl p = new TournamentPlayerImpl("Spieler A", 2000, 1800);
+                    JavaTournamentPlayer p = new JavaTournamentPlayer("Spieler A", 2000, 1800);
 
                     p.setNationalId(cols[0].trim());
 

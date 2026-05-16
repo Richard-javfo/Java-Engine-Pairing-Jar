@@ -4,7 +4,7 @@
  */
 package trf.impl;
 
-import trf.impl.TournamentPlayerImpl;
+import trf.impl.JavaTournamentPlayer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,9 +13,9 @@ import trf.api.FirstRoundColor;
 import trf.api.TournamentInfo;
 import trf.api.TournamentInfo;
 import trf.api.TournamentPlayer;
-import trf.impl.tiebreak.Buchholz;
-import trf.impl.tiebreak.SonnebornBerger;
-import trf.impl.tiebreak.TiebreakStrategy;
+import trf.tiebreak.Buchholz;
+import trf.tiebreak.SonnebornBerger;
+import trf.tiebreak.TiebreakStrategy;
 
 /**
  *

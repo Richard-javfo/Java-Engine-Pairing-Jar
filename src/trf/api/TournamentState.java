@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import trf.api.RankedPlayer.TiebreakEntry;
-import trf.impl.tiebreak.TiebreakStrategy;
+import trf.tiebreak.TiebreakStrategy;
 
 /**
  *

@@ -18,7 +18,7 @@ import trf.api.TournamentInfo;
 import trf.api.TournamentPlayer;
 import trf.api.TournamentState;
 import trf.impl.TournamentInfoImpl;
-import trf.impl.TournamentPlayerImpl;
+import trf.impl.JavaTournamentPlayer;
 
 /**
  *
@@ -77,7 +77,7 @@ public interface TrfParser {
     }
 
     private static TournamentPlayer parseLineToPlayer(String line) {
-        TournamentPlayerImpl player = new TournamentPlayerImpl();
+        JavaTournamentPlayer player = new JavaTournamentPlayer();
 
         // 001 steht an 0-2, wir fangen bei der Startnummer an
         player.setStartRank(parseSafeInt(line, 4, 8));    // 5-8 (Index 4-8)

@@ -5,7 +5,7 @@
 package trf.api;
 
 import java.io.IOException;
-import trf.impl.TournamentPlayerImpl;
+import trf.impl.JavaTournamentPlayer;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -27,10 +27,10 @@ public interface PlayerLoader {
     }
 
     // Die Haupt-Methode, die jeder Loader implementieren MUSS
-    List<TournamentPlayerImpl> loadPlayers(InputStream input, RatingMode mode);
+    List<JavaTournamentPlayer> loadPlayers(InputStream input, RatingMode mode);
 
     // Die Komfort-Methode: Ruft automatisch FIDE_ONLY auf
-    default List<TournamentPlayerImpl> loadPlayers(InputStream input) {
+    default List<JavaTournamentPlayer> loadPlayers(InputStream input) {
         return loadPlayers(input, RatingMode.FIDE_ONLY);
     }
     
