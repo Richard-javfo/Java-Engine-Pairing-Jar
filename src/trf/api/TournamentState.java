@@ -63,7 +63,7 @@ public class TournamentState {
         for (TournamentPlayer p : this.getTournamentPlayers().values()) {
             p.setPreviousRank(p.getActualRank());
             p.calculatePoints();
-            p.setCurrentRound(currentRound);
+            //p.setCurrentRound(currentRound);
 
         }
 

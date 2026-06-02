@@ -35,20 +35,20 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
 
     private TournamentState tournamentState;
     private TournamentInfo tournamentInfo;
-   
 
-    public TRFJavafoPairingProvider( TournamentInfo tournamentInfo,TournamentState tournamentState, PairingListener listener) {
+//    public TRFJavafoPairingProvider(TournamentInfo tournamentInfo, TournamentState tournamentState, PairingListener listener) {
+//        this.tournamentInfo = tournamentInfo;
+//        this.tournamentState = tournamentState;
+//        this.listener = listener;
+//    }
+
+    public TRFJavafoPairingProvider(TournamentInfo tournamentInfo) {
+
         this.tournamentInfo=tournamentInfo;
-        this.tournamentState = tournamentState;
-        this.listener = listener;
-    }
-
-    public TRFJavafoPairingProvider(TournamentInfo tournamentInfo,TournamentState tournamentState) {
-        this(tournamentInfo,tournamentState,null);
+        this.tournamentState = new TournamentState(tournamentInfo);
     }
 
     public List<TournamentPlayer> getTournamentPlayers() {
-        
 
         return new ArrayList<>(this.tournamentInfo.getTournamentPlayers().values());
     }
@@ -134,9 +134,11 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
 
         // In den Writer schreiben
         writer.print(sb.toString());
+        System.out.println(sb.toString());
     }
 
     // In deinem Generator-JAR
+    @Override
     public void generateInitialTrf(OutputStream out) {
         try {
 
@@ -145,7 +147,8 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
                 throw new Exception("no player in java engine");
             }
 
-            players.sort(new EloComparator());
+            //players.sort(new EloComparator());
+            this.tournamentState.updateRanking();
 
             // Wir bleiben bei UTF-8, aber wir kontrollieren die Byte-Breite manuell
             OutputStreamWriter osw = new OutputStreamWriter(out, StandardCharsets.UTF_8);
@@ -324,7 +327,5 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
     public void setTournamentInfo(TournamentInfo info) {
         this.tournamentInfo = info;
     }
-
-    
 
 }

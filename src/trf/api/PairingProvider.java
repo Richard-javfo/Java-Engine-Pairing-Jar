@@ -4,6 +4,7 @@
  */
 package trf.api;
 
+import java.io.OutputStream;
 import trf.impl.JavaTournamentPlayer;
 import java.util.List;
 import java.util.Map;
@@ -23,4 +24,6 @@ public interface PairingProvider {
     void setPairingListener(PairingListener listener);
 
    void setTournamentInfo(TournamentInfo info);
+   
+   void generateInitialTrf(OutputStream out);
 }

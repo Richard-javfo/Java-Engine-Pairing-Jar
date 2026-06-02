@@ -14,7 +14,7 @@ public class Round {
     final public static char PAIRING_ALLOCATED_BYE_RESULT = 'U'; // Das FIDE-'U'
     final public static char  BYE_COLOR = '-'; 
     
-    final public int roundNr;
+    public int roundNr;
     final public int opponentStartRank;
     final public char color;
     public char result;

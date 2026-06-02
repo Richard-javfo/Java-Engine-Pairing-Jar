@@ -4,17 +4,18 @@
  */
 package trf.impl;
 
-import trf.impl.JavaTournamentPlayer;
+import static java.time.LocalDate.now;
+import static java.time.LocalDateTime.now;
+import java.time.OffsetDateTime;
+import static java.time.OffsetDateTime.now;
+import static java.time.OffsetTime.now;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import trf.api.FirstRoundColor;
-import trf.api.FirstRoundColor;
-import trf.api.TournamentInfo;
 import trf.api.TournamentInfo;
 import trf.api.TournamentPlayer;
-import trf.tiebreak.Buchholz;
-import trf.tiebreak.SonnebornBerger;
 import trf.tiebreak.TiebreakStrategy;
 
 /**
@@ -168,7 +169,7 @@ public class TournamentInfoImpl implements TournamentInfo {
 
     @Override
     public String getTournamentID() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+       return "TRF-Turnier-Import"+OffsetDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
     }
 
     @Override

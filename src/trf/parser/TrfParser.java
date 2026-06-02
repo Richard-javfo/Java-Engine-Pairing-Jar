@@ -54,25 +54,31 @@ public interface TrfParser {
 
         TournamentState tournamentState = new TournamentState(info);
 
-        return validateCurrentRound(tournamentState, players);
+        return validateRound(tournamentState, players);
     }
 
-    static TournamentState validateCurrentRound(TournamentState tournamentState, Map<Integer, TournamentPlayer> players) {
-
+    static TournamentState validateRound(TournamentState tournamentState, Map<Integer, TournamentPlayer> players) {
+        Boolean isTournamentStateRundNrSet = false;
         for (TournamentPlayer p : players.values()) {
 
             if (p.getRounds() == null || p.getRounds().size() == 0) {
                 return tournamentState;
             }
-            Round lastRound = p.getRounds().getLast();
+            Round lastRound = p.getRounds().get(p.getRounds().size() - 1);
 
-            if (lastRound.result == '1' || lastRound.result == '=' || lastRound.result == '0') {
-                tournamentState.setCurrentRound(p.getRounds().size());
-                return tournamentState;
+            if (!isTournamentStateRundNrSet) {
+                if (lastRound.result == '1' || lastRound.result == '=' || lastRound.result == '0') {
+                    tournamentState.setCurrentRound(p.getRounds().size());
+                    isTournamentStateRundNrSet = true;
+                }
             }
-
+            for(int i=0; i< p.getRounds().size();i++)
+                p.getRounds().get(i).roundNr=i+1;
+            
+//tournamentState.getInfo().getTournamentPlayers().put(p.getStartRank(), p);
+           
         }
-
+        
         return tournamentState;
     }
 

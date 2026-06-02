@@ -26,13 +26,13 @@ public class JavaTournamentPlayer implements TournamentPlayer{
     private int previousRank;
     private int currentRound;
 
-    public void setCurrentRound(int currentRound) {
-        this.currentRound = currentRound;
-    }
-
-    public int getCurrentRound() {
-        return currentRound;
-    }
+//    public void setCurrentRound(int currentRound) {
+//        this.currentRound = currentRound;
+//    }
+//
+//    public int getCurrentRound() {
+//        return currentRound;
+//    }
 
     private String sex;         // 1 Zeichen (m/w)
     private String title;       // 3 Zeichen (z.B. " GM")
@@ -202,7 +202,7 @@ public class JavaTournamentPlayer implements TournamentPlayer{
 
     @Override
     public double getPoints() {
-        return this.points;
+        return this.calculatePoints();
     }
 
     @Override

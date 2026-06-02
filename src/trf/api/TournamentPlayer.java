@@ -59,9 +59,9 @@ public interface TournamentPlayer {
 
         return this.getRounds().stream()
                 .mapToDouble(r -> switch (r.result) {
-            case '+', 'W', '1', 'F', 'U', 'w', 'f', 'u' ->
+            case '1','U','u','+', 'W', 'F',  'w', 'f' ->
                 1.0;
-            case 'D', '=', 'H', 'd' ->
+            case '=', 'H','D', 'd' ->
                 0.5;
             default ->
                 0.0;
@@ -74,7 +74,7 @@ public interface TournamentPlayer {
 
     public void setPreviousRank(int actualRank);
 
-    public void setCurrentRound(int currentRound);
+    //public void setCurrentRound(int currentRound);
 
     public void setActualRank(int i);
 
