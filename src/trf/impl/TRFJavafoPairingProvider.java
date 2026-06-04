@@ -77,6 +77,7 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
             writer.println("072 " + countRated(players));
 
             writer.println("082 0");
+            writer.println("092 0" + ti.getType());
             writer.println("102 " + ti.getChiefArbiter());
             writer.println("112 " + ti.getDeputyArbiter());
             writer.println("122 " + ti.getTimeControl());
@@ -203,6 +204,7 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
         String result = null;
 
         try {
+           
             // 1. Der RAM-Speicher (Schreib-Seite)
             outputStream = new ByteArrayOutputStream();
 
@@ -217,7 +219,13 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
 
             // 5. JaVaFo füttern
             pairingOutputStream = new ByteArrayOutputStream();
-            JaVaFoApi.exec(1000, "Bayerische Meisterschaft", inputStream, pairingOutputStream);
+            int option;
+            try{
+              option = Integer.parseInt(engineOptions);
+            }catch(Exception e){ option = 1000;}
+            
+            System.out.println("javafo engine Option = " + option);
+            JaVaFoApi.exec(option, this.tournamentInfo.getTournamentName(), inputStream, pairingOutputStream);
 
             // 6. Ergebnis direkt aus dem RAM lesen
             result = pairingOutputStream.toString();
