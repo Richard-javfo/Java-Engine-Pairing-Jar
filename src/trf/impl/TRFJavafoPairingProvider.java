@@ -77,7 +77,7 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
             writer.println("072 " + countRated(players));
 
             writer.println("082 0");
-            writer.println("092 0" + ti.getType());
+            writer.println("092 " + ti.getType());
             writer.println("102 " + ti.getChiefArbiter());
             writer.println("112 " + ti.getDeputyArbiter());
             writer.println("122 " + ti.getTimeControl());
