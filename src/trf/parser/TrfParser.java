@@ -9,10 +9,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import trf.api.FirstRoundColor;
 import trf.api.Round;
 import trf.api.TournamentInfo;
 import trf.api.TournamentPlayer;
@@ -29,7 +33,7 @@ public interface TrfParser {
     static TournamentState parse(InputStream inputStream) {
 
         Map<Integer, TournamentPlayer> players = new HashMap<>();
-        TournamentInfo info = new TournamentInfoImpl(players);
+        TournamentInfoImpl info = new TournamentInfoImpl(players);
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -45,7 +49,8 @@ public interface TrfParser {
                     }
                 } else {
                     // Alles andere geht an die Info-Logik (012, XXR, etc.)
-                    ((TournamentInfoImpl) info).parseHeaderLine(line);
+                    //((TournamentInfoImpl) info).parseHeaderLine(line);
+                    parseHeaderLine(line, info);
                 }
             }
         } catch (IOException e) {
@@ -57,7 +62,50 @@ public interface TrfParser {
         return validateRound(tournamentState, players);
     }
 
-    static TournamentState validateRound(TournamentState tournamentState, Map<Integer, TournamentPlayer> players) {
+    private static void parseHeaderLine(String line, TournamentInfoImpl info) {
+        if (line.length() < 4) {
+            return;
+        }
+
+        String tag = line.substring(0, 3);
+        // Die eigentlichen Daten beginnen im TRF meist ab Position 14
+        String content = line.length() > 4 ? line.substring(3).trim() : "";
+        //String content = line.length() > 4 ? line.substring(3) : "";
+        switch (tag) {
+            case "012" ->
+                info.tournamentName = content;
+            case "022" ->
+                info.city = content;
+            case "032" ->
+                info.federation = content;
+            case "042" ->
+                info.startDate = FlexibleDateParser.parse(content);
+            case "052" ->
+                info.endDate = FlexibleDateParser.parse(content);
+            case "092" ->
+                info.type = content;
+            case "102" ->
+                info.chiefArbiter = content;
+            case "112" ->
+                info.deputyArbiter = content;
+            case "122" ->
+                info.timeControl = content;
+            case "132" -> {
+                List<LocalDate> roundDateList = parseRoundDates(content);
+                info.roundDates.addAll(roundDateList);
+            }// Kann mehrfach vorkommen
+            case "XXR" ->
+                info.totalRounds = Integer.parseInt(content);
+            case "XXC" ->
+                info.firstRoundColor = parseColor(content);
+            case "XXP" ->
+                info.forbiddenPairs.add(content);
+            case "XXO" ->
+                info.extraOptions = content; // Falls vorhanden
+        }
+    }
+
+    private static TournamentState validateRound(TournamentState tournamentState, Map<Integer, TournamentPlayer> players) {
         Boolean isTournamentStateRundNrSet = false;
         for (TournamentPlayer p : players.values()) {
 
@@ -72,13 +120,13 @@ public interface TrfParser {
                     isTournamentStateRundNrSet = true;
                 }
             }
-            for(int i=0; i< p.getRounds().size();i++)
-                p.getRounds().get(i).roundNr=i+1;
-            
+            for (int i = 0; i < p.getRounds().size(); i++) {
+                p.getRounds().get(i).roundNr = i + 1;
+            }
+
 //tournamentState.getInfo().getTournamentPlayers().put(p.getStartRank(), p);
-           
         }
-        
+
         return tournamentState;
     }
 
@@ -161,6 +209,43 @@ public interface TrfParser {
         } catch (NumberFormatException e) {
             return 0;
         }
+    }
+
+    private static FirstRoundColor parseColor(String content) {
+        if (content.toLowerCase().contains("white1")) {
+            return FirstRoundColor.WHITE;
+        }
+        if (content.toLowerCase().contains("black1")) {
+            return FirstRoundColor.BLACK;
+        }
+        return FirstRoundColor.RANDOM;
+    }
+
+    private static List<LocalDate> parseRoundDates(String line) {
+        System.out.println(line.length());
+
+        if (line.length() <= 8) {
+            System.out.println(line);
+            return new ArrayList<LocalDate>(0);
+        }
+
+        // Wir extrahieren den Rest der Zeile und teilen ihn in Tokens auf
+        String[] dateStrings = line.split("  ");
+        System.out.println(line);
+        List<LocalDate> localdates = new ArrayList<>(dateStrings.length);
+
+        for (String ds : dateStrings) {
+            LocalDate date = FlexibleDateParser.parseShort(ds);
+
+            if (date != null) {
+                localdates.add(date);
+            } else {
+                return localdates;
+            }
+
+        }
+
+        return localdates;
     }
 
 }

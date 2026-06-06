@@ -4,6 +4,7 @@
  */
 package trf.api;
 
+import java.time.LocalDate;
 import trf.impl.JavaTournamentPlayer;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +27,8 @@ import trf.tiebreak.TiebreakStrategy;
         String getTournamentName();       // 012
         String getCity();                 // 022
         String getFederation();           // 032 (z.B. GER)
-        String getStartDate();            // 042 (Format: YYYY/MM/DD)
-        String getEndDate();              // 052
+        LocalDate getStartDate();            // 042 (Format: YYYY/MM/DD)
+        LocalDate getEndDate();              // 052
         //int getNumPlayers();              // 062    kann beechnet werden
         //int getNumRatedPlayers();         // 072
         //int getNumTeams();                // 082 (0 wenn Einzelturnier)
@@ -35,7 +36,7 @@ import trf.tiebreak.TiebreakStrategy;
         String getChiefArbiter();         // 102
         String getDeputyArbiter();        // 112
         String getTimeControl();          // 122 (z.B. 90 min + 30 s)
-        List<String> getRoundDates();           // 132
+        List<LocalDate> getRoundDates();           // 132
         FirstRoundColor getFirstRoundColor(); // e.g. XXC black1
         List<String> getForbiddenPairs();   // XXP 32 14
         //void addForbiddenPair(String pair);

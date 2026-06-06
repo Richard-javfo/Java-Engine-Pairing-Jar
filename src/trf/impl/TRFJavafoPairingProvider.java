@@ -24,6 +24,7 @@ import trf.api.TournamentInfo;
 import trf.api.TournamentState;
 import trf.api.PairingListener;
 import trf.api.TournamentPlayer;
+import trf.parser.FlexibleDateParser;
 
 /**
  * //
@@ -90,8 +91,9 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
                 sb.append(" ");
             }
             if (ti.getRoundDates() != null) {
-                for (String rundDate : ti.getRoundDates()) {
-                    sb.append(rundDate);
+                for (LocalDate rundDate : ti.getRoundDates()) {
+                    
+                    sb.append(rundDate.format(FlexibleDateParser.TRF_DATE_SHORT));
                     sb.append("  ");
                 }
             }

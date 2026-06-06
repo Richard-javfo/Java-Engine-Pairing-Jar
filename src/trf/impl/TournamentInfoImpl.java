@@ -4,6 +4,7 @@
  */
 package trf.impl;
 
+import java.time.LocalDate;
 import static java.time.LocalDate.now;
 import static java.time.LocalDateTime.now;
 import java.time.OffsetDateTime;
@@ -24,77 +25,77 @@ import trf.tiebreak.TiebreakStrategy;
  */
 public class TournamentInfoImpl implements TournamentInfo {
 
-    private String tournamentName;
-    private String city;
-    private String federation;
-    private String startDate;
-    private String endDate;
-    private String type;
-    private String chiefArbiter;
-    private String deputyArbiter;
-    private String timeControl;
-    private int totalRounds;
-    private FirstRoundColor firstRoundColor = FirstRoundColor.RANDOM;
-    private final List<String> roundDates = new ArrayList<>();
-    private final List<String> forbiddenPairs = new ArrayList<>();
-    private final List<TiebreakStrategy> tiebreakStrategies = new ArrayList<>();
-    private String extraOptions = "";
-    private Map<Integer, TournamentPlayer> players;
+   public  String tournamentName;
+   public  String city;
+   public  String federation;
+   public  LocalDate startDate;
+   public  LocalDate endDate;
+   public  String type;
+   public  String chiefArbiter;
+   public  String deputyArbiter;
+   public  String timeControl;
+   public  int totalRounds;
+   public  FirstRoundColor firstRoundColor = FirstRoundColor.RANDOM;
+   public  final List<LocalDate> roundDates = new ArrayList<>();
+   public  final List<String> forbiddenPairs = new ArrayList<>();
+   public  final List<TiebreakStrategy> tiebreakStrategies = new ArrayList<>();
+   public  String extraOptions = "";
+   public  Map<Integer, TournamentPlayer> players;
 
     public TournamentInfoImpl(Map<Integer, TournamentPlayer> players) {
         this.players = players;
     }
 
-    public void parseHeaderLine(String line) {
-        if (line.length() < 4) {
-            return;
-        }
+//    public void parseHeaderLine(String line) {
+//        if (line.length() < 4) {
+//            return;
+//        }
+//
+//        String tag = line.substring(0, 3);
+//        // Die eigentlichen Daten beginnen im TRF meist ab Position 14
+//        String content = line.length() > 4 ? line.substring(3).trim() : "";
+//
+//        switch (tag) {
+//            case "012" ->
+//                this.tournamentName = content;
+//            case "022" ->
+//                this.city = content;
+//            case "032" ->
+//                this.federation = content;
+//            case "042" ->
+//                this.startDate = content;
+//            case "052" ->
+//                this.endDate = content;
+//            case "092" ->
+//                this.type = content;
+//            case "102" ->
+//                this.chiefArbiter = content;
+//            case "112" ->
+//                this.deputyArbiter = content;
+//            case "122" ->
+//                this.timeControl = content;
+//            case "132" ->
+//                this.roundDates.add(content); // Kann mehrfach vorkommen
+//            case "XXR" ->
+//                this.totalRounds = Integer.parseInt(content);
+//            case "XXC" ->
+//                this.firstRoundColor = parseColor(content);
+//            case "XXP" ->
+//                this.forbiddenPairs.add(content);
+//            case "XXO" ->
+//                this.extraOptions = content; // Falls vorhanden
+//        }
+//    }
 
-        String tag = line.substring(0, 3);
-        // Die eigentlichen Daten beginnen im TRF meist ab Position 14
-        String content = line.length() > 4 ? line.substring(3).trim() : "";
-
-        switch (tag) {
-            case "012" ->
-                this.tournamentName = content;
-            case "022" ->
-                this.city = content;
-            case "032" ->
-                this.federation = content;
-            case "042" ->
-                this.startDate = content;
-            case "052" ->
-                this.endDate = content;
-            case "092" ->
-                this.type = content;
-            case "102" ->
-                this.chiefArbiter = content;
-            case "112" ->
-                this.deputyArbiter = content;
-            case "122" ->
-                this.timeControl = content;
-            case "132" ->
-                this.roundDates.add(content); // Kann mehrfach vorkommen
-            case "XXR" ->
-                this.totalRounds = Integer.parseInt(content);
-            case "XXC" ->
-                this.firstRoundColor = parseColor(content);
-            case "XXP" ->
-                this.forbiddenPairs.add(content);
-            case "XXO" ->
-                this.extraOptions = content; // Falls vorhanden
-        }
-    }
-
-    private FirstRoundColor parseColor(String content) {
-        if (content.toLowerCase().contains("white1")) {
-            return FirstRoundColor.WHITE;
-        }
-        if (content.toLowerCase().contains("black1")) {
-            return FirstRoundColor.BLACK;
-        }
-        return FirstRoundColor.RANDOM;
-    }
+//    private FirstRoundColor parseColor(String content) {
+//        if (content.toLowerCase().contains("white1")) {
+//            return FirstRoundColor.WHITE;
+//        }
+//        if (content.toLowerCase().contains("black1")) {
+//            return FirstRoundColor.BLACK;
+//        }
+//        return FirstRoundColor.RANDOM;
+//    }
 
     // --- Getter Implementierungen ---
     @Override
@@ -113,12 +114,12 @@ public class TournamentInfoImpl implements TournamentInfo {
     }
 
     @Override
-    public String getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
     @Override
-    public String getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
@@ -148,7 +149,7 @@ public class TournamentInfoImpl implements TournamentInfo {
     }
 
     @Override
-    public List<String> getRoundDates() {
+    public List<LocalDate> getRoundDates() {
         return roundDates;
     }
 
