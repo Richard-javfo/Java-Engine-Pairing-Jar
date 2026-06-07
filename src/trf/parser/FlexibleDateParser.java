@@ -18,15 +18,18 @@ public interface FlexibleDateParser {
     final DateTimeFormatter TRF_DATE_LONG = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
     final DateTimeFormatter[] DATE_FORMATTERS = {
+        TRF_DATE_SHORT,
+        DateTimeFormatter.ISO_DATE,
+        TRF_DATE_LONG,
         DateTimeFormatter.ofPattern("dd.MM.yyyy"), // 05.06.2026
+        DateTimeFormatter.ofPattern("dd/MM/yyyy"), // 05.06.2026
         DateTimeFormatter.ofPattern("d.M.yyyy"), // 5.6.2026
         DateTimeFormatter.ofPattern("dd.MM.yy"), // 05.06.26
         DateTimeFormatter.ofPattern("d.M.yy"), // 5.6.26
-        DateTimeFormatter.ISO_DATE, // 2026-06-05 (ISO-Standard)
         DateTimeFormatter.ofPattern("dd-MM-yyyy"),
         DateTimeFormatter.ofPattern("yyyy/MM/dd"),
-        TRF_DATE_LONG,
-        TRF_DATE_SHORT};
+        DateTimeFormatter.ofPattern("MM/dd/yy")
+       };
 
     final DateTimeFormatter[] TRF_SHORT_DATE_FORMATTERS = {
         TRF_DATE_SHORT, DateTimeFormatter.ofPattern("yy-MM-dd"),

@@ -7,6 +7,7 @@ package trf.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import trf.api.BakuRound;
 import trf.api.Round;
 import trf.api.TournamentPlayer;
 import trf.impl.TRFJavafoPairingProvider;
@@ -45,10 +46,15 @@ public class JavaTournamentPlayer implements TournamentPlayer{
     private String birthDate;   // 10 Zeichen (YYYY/MM/DD)
 
     private List<Round> rounds;
+    private List<BakuRound> bakuRounds;
 
     public JavaTournamentPlayer(int rounds) {
         this.rounds = new ArrayList(rounds);
         this.startRank = NO_START_RANK;
+    }
+
+    public void setBakuRounds(List<BakuRound> bakuRounds) {
+        this.bakuRounds = bakuRounds;
     }
     
      public JavaTournamentPlayer(int startRank,String name,int rounds) {
@@ -127,14 +133,19 @@ public class JavaTournamentPlayer implements TournamentPlayer{
     }
 
     
-
-    
+   
    
     
     @Override
     public List<Round> getRounds() {
         return rounds;
     }
+    
+     @Override
+    public List<BakuRound> getBakuRounds() {
+        return bakuRounds;
+    }
+    
 
     public void setActualRank(int actualRank) {
         this.actualRank = actualRank;
@@ -209,5 +220,7 @@ public class JavaTournamentPlayer implements TournamentPlayer{
     public void setPoints(double p) {
         this.points = p;
     }
+
+   
 
 }

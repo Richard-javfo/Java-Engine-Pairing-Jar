@@ -17,6 +17,15 @@ import java.util.Scanner;
 public record Pairing(Round whiteRound, int whitePlayerStartNo,
         Round blackRound, int blackPlayerStartNo) {
     
+   public Pairing withWhiteRound(Round whiteRound){
+       return new Pairing(whiteRound,this.whitePlayerStartNo,this.blackRound,this.blackPlayerStartNo);
+   }
+   
+   public Pairing withBlackRound(Round blackRound){
+       return new Pairing(this.whiteRound,this.whitePlayerStartNo,blackRound,this.blackPlayerStartNo);
+   }
+    
+    
     public String pairStr(){
         
         return whitePlayerStartNo + " " + blackPlayerStartNo;

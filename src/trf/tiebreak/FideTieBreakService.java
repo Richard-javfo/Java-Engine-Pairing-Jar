@@ -36,12 +36,12 @@ public  abstract class FideTieBreakService implements TiebreakStrategy {
 
         for (int i = 0; i < p.getRounds().size(); i++) {
             Round r = p.getRounds().get(i);
-            char res = r.result;
+            char res = r.result();
             double effectiveOpponentPoints;
 
             // Deine schnelle "Ergebnis-Zuerst"-Logik
             if (res == '1' || res == '0' || res == '=' || res == '½') {
-                TournamentPlayer opponent = allPlayers.get(r.opponentStartRank);
+                TournamentPlayer opponent = allPlayers.get(r.opponentStartRank());
                 effectiveOpponentPoints = (opponent != null) ? opponent.getPoints() : 0.0;
             } else {
                 // Virtueller Gegner nach FIDE

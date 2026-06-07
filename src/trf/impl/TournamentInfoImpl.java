@@ -5,16 +5,13 @@
 package trf.impl;
 
 import java.time.LocalDate;
-import static java.time.LocalDate.now;
-import static java.time.LocalDateTime.now;
 import java.time.OffsetDateTime;
-import static java.time.OffsetDateTime.now;
-import static java.time.OffsetTime.now;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import trf.api.FirstRoundColor;
+import trf.api.BakuRound;
 import trf.api.TournamentInfo;
 import trf.api.TournamentPlayer;
 import trf.tiebreak.TiebreakStrategy;
@@ -35,67 +32,19 @@ public class TournamentInfoImpl implements TournamentInfo {
    public  String deputyArbiter;
    public  String timeControl;
    public  int totalRounds;
-   public  FirstRoundColor firstRoundColor = FirstRoundColor.RANDOM;
+   public  List<String> engineConfigs = new ArrayList<>();
+ 
    public  final List<LocalDate> roundDates = new ArrayList<>();
    public  final List<String> forbiddenPairs = new ArrayList<>();
    public  final List<TiebreakStrategy> tiebreakStrategies = new ArrayList<>();
    public  String extraOptions = "";
    public  Map<Integer, TournamentPlayer> players;
+   public  Map<Integer, List<BakuRound>> bakuRounds = new HashMap<>();
 
     public TournamentInfoImpl(Map<Integer, TournamentPlayer> players) {
         this.players = players;
     }
 
-//    public void parseHeaderLine(String line) {
-//        if (line.length() < 4) {
-//            return;
-//        }
-//
-//        String tag = line.substring(0, 3);
-//        // Die eigentlichen Daten beginnen im TRF meist ab Position 14
-//        String content = line.length() > 4 ? line.substring(3).trim() : "";
-//
-//        switch (tag) {
-//            case "012" ->
-//                this.tournamentName = content;
-//            case "022" ->
-//                this.city = content;
-//            case "032" ->
-//                this.federation = content;
-//            case "042" ->
-//                this.startDate = content;
-//            case "052" ->
-//                this.endDate = content;
-//            case "092" ->
-//                this.type = content;
-//            case "102" ->
-//                this.chiefArbiter = content;
-//            case "112" ->
-//                this.deputyArbiter = content;
-//            case "122" ->
-//                this.timeControl = content;
-//            case "132" ->
-//                this.roundDates.add(content); // Kann mehrfach vorkommen
-//            case "XXR" ->
-//                this.totalRounds = Integer.parseInt(content);
-//            case "XXC" ->
-//                this.firstRoundColor = parseColor(content);
-//            case "XXP" ->
-//                this.forbiddenPairs.add(content);
-//            case "XXO" ->
-//                this.extraOptions = content; // Falls vorhanden
-//        }
-//    }
-
-//    private FirstRoundColor parseColor(String content) {
-//        if (content.toLowerCase().contains("white1")) {
-//            return FirstRoundColor.WHITE;
-//        }
-//        if (content.toLowerCase().contains("black1")) {
-//            return FirstRoundColor.BLACK;
-//        }
-//        return FirstRoundColor.RANDOM;
-//    }
 
     // --- Getter Implementierungen ---
     @Override
@@ -154,8 +103,8 @@ public class TournamentInfoImpl implements TournamentInfo {
     }
 
     @Override
-    public FirstRoundColor getFirstRoundColor() {
-        return firstRoundColor;
+    public List<String>getEngineConfigsXXC() {
+        return engineConfigs;
     }
 
     @Override
@@ -170,7 +119,7 @@ public class TournamentInfoImpl implements TournamentInfo {
 
     @Override
     public String getTournamentID() {
-       return "TRF-Turnier-Import"+OffsetDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+       return "TRF-Turnier-Import-"+OffsetDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
     }
 
     @Override
@@ -183,4 +132,12 @@ public class TournamentInfoImpl implements TournamentInfo {
     public Map<Integer, TournamentPlayer> getTournamentPlayers() {
         return players;
     }
+
+    @Override
+    public Map<Integer, List<BakuRound>> getBakuRounds() {
+       
+        return bakuRounds;
+
+    }
+        
 }

@@ -10,15 +10,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import trf.api.FirstRoundColor;
+import trf.api.BakuRound;
 import trf.api.Round;
-import trf.api.TournamentInfo;
 import trf.api.TournamentPlayer;
 import trf.api.TournamentState;
 import trf.impl.TournamentInfoImpl;
@@ -47,6 +44,10 @@ public interface TrfParser {
                     if (p != null) {
                         players.put(p.getStartRank(), p);
                     }
+                } else if (line.startsWith("XXA")) {
+                    
+                    parseBakuLine(line,info);
+
                 } else {
                     // Alles andere geht an die Info-Logik (012, XXR, etc.)
                     //((TournamentInfoImpl) info).parseHeaderLine(line);
@@ -62,13 +63,42 @@ public interface TrfParser {
         return validateRound(tournamentState, players);
     }
 
+    private static void parseBakuLine(String line, TournamentInfoImpl info){
+          if (line == null || line.length() <= 9) {
+            return ;
+        }
+        
+        
+        List<BakuRound> bakuRounds = new ArrayList<>();
+        // 001 steht an 0-2, wir fangen bei der Startnummer an
+        int startRank = parseSafeInt(line, 4, 8);    // 5-8 (Index 4-8)
+        
+        
+       
+
+        // Wir extrahieren den Rest der Zeile und teilen ihn in Tokens auf
+        String[] results = line.substring(8).trim().split("\\s+");
+        
+        for(int i=0;i<results.length;i++){
+            
+       
+            int roundNr = i + 1;
+            double virtualPoints = Double.parseDouble(results[i]);
+           BakuRound baku =new BakuRound(startRank, roundNr, virtualPoints);
+            bakuRounds.add(baku);
+            
+        }
+        //System.out.println("parseBaku " + bakuRounds.toString());
+        info.getBakuRounds().put(startRank,bakuRounds);
+    }
+    
     private static void parseHeaderLine(String line, TournamentInfoImpl info) {
         if (line.length() < 4) {
             return;
         }
 
         String tag = line.substring(0, 3);
-        // Die eigentlichen Daten beginnen im TRF meist ab Position 14
+        // Die eigentlichen Daten beginnen im TRF meist ab Position 4
         String content = line.length() > 4 ? line.substring(3).trim() : "";
         //String content = line.length() > 4 ? line.substring(3) : "";
         switch (tag) {
@@ -96,8 +126,10 @@ public interface TrfParser {
             }// Kann mehrfach vorkommen
             case "XXR" ->
                 info.totalRounds = Integer.parseInt(content);
-            case "XXC" ->
-                info.firstRoundColor = parseColor(content);
+            case "XXC" -> {
+                info.engineConfigs.add(content);
+
+            }
             case "XXP" ->
                 info.forbiddenPairs.add(content);
             case "XXO" ->
@@ -115,16 +147,12 @@ public interface TrfParser {
             Round lastRound = p.getRounds().get(p.getRounds().size() - 1);
 
             if (!isTournamentStateRundNrSet) {
-                if (lastRound.result == '1' || lastRound.result == '=' || lastRound.result == '0') {
+                if (lastRound.result() == '1' || lastRound.result() == '=' || lastRound.result() == '0') {
                     tournamentState.setCurrentRound(p.getRounds().size());
                     isTournamentStateRundNrSet = true;
                 }
             }
-            for (int i = 0; i < p.getRounds().size(); i++) {
-                p.getRounds().get(i).roundNr = i + 1;
-            }
 
-//tournamentState.getInfo().getTournamentPlayers().put(p.getStartRank(), p);
         }
 
         return tournamentState;
@@ -155,11 +183,14 @@ public interface TrfParser {
         // berechnest du die Punkte ja ohnehin aus den Runden neu.
         // Runden ab Spalte 92 (Index 91)
         player.setRounds(parseRounds(line));
+        
 
         player.calculatePoints();
 
         return player;
     }
+
+    
 
     private static List<Round> parseRounds(String line) {
         List<Round> rounds = new ArrayList<>();
@@ -172,7 +203,7 @@ public interface TrfParser {
         // Wir extrahieren den Rest der Zeile und teilen ihn in Tokens auf
         String[] tokens = line.substring(91).trim().split("\\s+");
 
-        int roundNr = 0;
+        int roundNr = 1;
         int i = 0;
         while (i + 2 < tokens.length) {
             String idToken = tokens[i];
@@ -211,16 +242,6 @@ public interface TrfParser {
         }
     }
 
-    private static FirstRoundColor parseColor(String content) {
-        if (content.toLowerCase().contains("white1")) {
-            return FirstRoundColor.WHITE;
-        }
-        if (content.toLowerCase().contains("black1")) {
-            return FirstRoundColor.BLACK;
-        }
-        return FirstRoundColor.RANDOM;
-    }
-
     private static List<LocalDate> parseRoundDates(String line) {
         System.out.println(line.length());
 
@@ -247,5 +268,9 @@ public interface TrfParser {
 
         return localdates;
     }
+
+    
+
+    
 
 }

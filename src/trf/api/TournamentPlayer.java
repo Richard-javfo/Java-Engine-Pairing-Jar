@@ -58,7 +58,7 @@ public interface TournamentPlayer {
 //        Z  zero-point-bye Known absence from round - Not rated  
 
         return this.getRounds().stream()
-                .mapToDouble(r -> switch (r.result) {
+                .mapToDouble(r -> switch (r.result()) {
             case '1','U','u','+', 'W', 'F',  'w', 'f' ->
                 1.0;
             case '=', 'H','D', 'd' ->
@@ -71,6 +71,7 @@ public interface TournamentPlayer {
     }
 
     public List<Round> getRounds();
+    public List<BakuRound> getBakuRounds();
 
     public void setPreviousRank(int actualRank);
 

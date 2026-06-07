@@ -18,6 +18,7 @@ import java.util.Locale;
 import java.util.Map;
 import javafo.api.JaVaFoApi;
 import trf.api.AbstractPairingProvider;
+import trf.api.BakuRound;
 import trf.api.Pairing;
 import trf.api.Round;
 import trf.api.TournamentInfo;
@@ -42,16 +43,20 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
 //        this.tournamentState = tournamentState;
 //        this.listener = listener;
 //    }
-
     public TRFJavafoPairingProvider(TournamentInfo tournamentInfo) {
 
-        this.tournamentInfo=tournamentInfo;
+        this.tournamentInfo = tournamentInfo;
         this.tournamentState = new TournamentState(tournamentInfo);
     }
 
     public List<TournamentPlayer> getTournamentPlayers() {
 
         return new ArrayList<>(this.tournamentInfo.getTournamentPlayers().values());
+    }
+
+    public List<List<BakuRound>> getBakuRounds() {
+
+        return new ArrayList<>(this.tournamentInfo.getBakuRounds().values());
     }
 
     private void writeHeader(PrintWriter writer, TournamentInfo ti) throws Exception {
@@ -74,8 +79,8 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
             writer.println("052 " + ti.getEndDate());
 
             // 062 & 072 - Spielerzahlen (Immer live aus der Liste berechnet)
-            writer.println("062 " + players.size());
-            writer.println("072 " + countRated(players));
+            writer.println("062 " + getTournamentPlayers().size());
+            writer.println("072 " + countRated(getTournamentPlayers()));
 
             writer.println("082 0");
             writer.println("092 " + ti.getType());
@@ -92,7 +97,7 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
             }
             if (ti.getRoundDates() != null) {
                 for (LocalDate rundDate : ti.getRoundDates()) {
-                    
+
                     sb.append(rundDate.format(FlexibleDateParser.TRF_DATE_SHORT));
                     sb.append("  ");
                 }
@@ -105,21 +110,9 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
         // XXR - Die wichtigste Zeile für Javafo
         writer.println("XXR " + ti.getTotalRounds());
 
-        switch (ti.getFirstRoundColor()) {
+        for (String c : ti.getEngineConfigsXXC()) {
 
-            case BLACK:
-                writer.println("XXC black1");
-                break;
-            case WHITE:
-                writer.println("XXC white1");
-                break;
-
-            default:
-                if (Math.random() < 0.5) {
-                    writer.println("XXC black1");
-                } else {
-                    writer.println("XXC white1");
-                }
+            writer.println("XXC " + c);
 
         }
         for (String pairStr : ti.getForbiddenPairs()) {
@@ -128,7 +121,7 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
 
     }
 
-    private void writeTrfLine(TournamentPlayer p, PrintWriter writer, List<TournamentPlayer> playerList) {
+    private void writeTrfLine(TournamentPlayer p, PrintWriter writer) {
 
         StringBuilder sb = new StringBuilder(100 + p.getRounds().size() * 10);
         appendPlayerLine001(p, sb);
@@ -137,7 +130,28 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
 
         // In den Writer schreiben
         writer.print(sb.toString());
-        System.out.println(sb.toString());
+        
+    }
+
+    private void writeTrfLine(List<BakuRound> playersBakus, PrintWriter writer) {
+
+        if (playersBakus.isEmpty()) {
+            return;
+        }
+        StringBuilder sb = new StringBuilder(12 + playersBakus.size() * 5);
+        sb.append("XXA");
+
+        sb.append(String.format(" %4d", playersBakus.getFirst().playerStartRank()));
+
+        for (BakuRound bakuRound : playersBakus) {
+            sb.append("  ");
+
+            sb.append(String.format(Locale.US, "%2.1f", bakuRound.points()));
+
+        }
+        writer.print(sb.toString());
+        
+
     }
 
     // In deinem Generator-JAR
@@ -167,11 +181,18 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
 //                    p.setStartRank(p.getActualRank());
 //                }
                 p.calculatePoints();
-                writeTrfLine(p, writer, players);
+                writeTrfLine(p, writer);
 
                 writer.print("\r\n");
 
             }
+            List<List<BakuRound>> bakus = this.getBakuRounds();
+            for (List<BakuRound> playersBakus : bakus) {
+                
+                writeTrfLine(playersBakus, writer);
+                writer.print("\r\n");
+            }
+
             writer.flush();
         } catch (Exception ex) {
             // Gibt den Klassennamen und die Fehlermeldung aus
@@ -206,7 +227,7 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
         String result = null;
 
         try {
-           
+
             // 1. Der RAM-Speicher (Schreib-Seite)
             outputStream = new ByteArrayOutputStream();
 
@@ -222,10 +243,12 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
             // 5. JaVaFo füttern
             pairingOutputStream = new ByteArrayOutputStream();
             int option;
-            try{
-              option = Integer.parseInt(engineOptions);
-            }catch(Exception e){ option = 1000;}
-            
+            try {
+                option = Integer.parseInt(engineOptions);
+            } catch (Exception e) {
+                option = 1000;
+            }
+
             System.out.println("javafo engine Option = " + option);
             JaVaFoApi.exec(option, this.tournamentInfo.getTournamentName(), inputStream, pairingOutputStream);
 
@@ -336,6 +359,10 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
     @Override
     public void setTournamentInfo(TournamentInfo info) {
         this.tournamentInfo = info;
+    }
+
+    public void setPairingListener(PairingListener l) {
+        this.listener = l;
     }
 
 }

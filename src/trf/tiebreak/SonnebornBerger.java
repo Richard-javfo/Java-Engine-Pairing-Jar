@@ -46,7 +46,7 @@ public class SonnebornBerger extends FideTieBreakService {
                 .skip(discardLowest) // Schneidet die X kleinsten ab
                 .limit(Math.max(0, remaining)) // Behält nur die mittleren N Elemente
                 .mapToDouble(data -> {
-                    char res = data.round().result;
+                    char res = data.round().result();
                     double oppPts = data.opponentPoints();
 
                     // FIDE Regel: Sieg = volle Gegnerpunkte, Remis = halbe, Niederlage = 0
@@ -81,14 +81,14 @@ public class SonnebornBerger extends FideTieBreakService {
 
         for (int i = 0; i < p.getRounds().size(); i++) {
             Round r = p.getRounds().get(i);
-            char res = r.result;
+            char res = r.result();
             int roundNum = i + 1;
             double effectiveOpponentPoints;
 
             // DEINE LOGIK: Erst das Ergebnis prüfen (Schneller als Map-Lookup)
             if (res == '1' || res == '0' || res == '=' || res == '½') {
                 // Reguläre Partie -> Ab in die Map
-                TournamentPlayer opponent = allPlayers.get(r.opponentStartRank);
+                TournamentPlayer opponent = allPlayers.get(r.opponentStartRank());
 
                 // Falls der Gegner (warum auch immer) nicht in der Map ist -> 0.0
                 effectiveOpponentPoints = (opponent != null) ? opponent.getPoints() : 0.0;

@@ -37,12 +37,14 @@ import trf.tiebreak.TiebreakStrategy;
         String getDeputyArbiter();        // 112
         String getTimeControl();          // 122 (z.B. 90 min + 30 s)
         List<LocalDate> getRoundDates();           // 132
-        FirstRoundColor getFirstRoundColor(); // e.g. XXC black1
+        List<String> getEngineConfigsXXC(); // e.g. XXC black1  XXC rank
+        //Boolean getIfActualRankPaired();
         List<String> getForbiddenPairs();   // XXP 32 14
         //void addForbiddenPair(String pair);
         List<TiebreakStrategy> listTiebreaksStrategies();
         //public void parseHeaderLine(String line);
         Map<Integer,TournamentPlayer> getTournamentPlayers();
+        Map<Integer,List<BakuRound>> getBakuRounds();
 
     }
 
