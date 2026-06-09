@@ -4,6 +4,7 @@
  */
 package trf.parser;
 
+import trf.impl.JavaTournamentPlayer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,9 +18,7 @@ import java.util.Map;
 import trf.api.BakuRound;
 import trf.api.Round;
 import trf.api.TournamentPlayer;
-import trf.api.TournamentState;
-import trf.impl.TournamentInfoImpl;
-import trf.impl.JavaTournamentPlayer;
+import trf.impl.TournamentState;
 
 /**
  *
@@ -146,12 +145,12 @@ public interface TrfParser {
             }
             Round lastRound = p.getRounds().get(p.getRounds().size() - 1);
 
-            if (!isTournamentStateRundNrSet) {
-                if (lastRound.result() == '1' || lastRound.result() == '=' || lastRound.result() == '0') {
-                    tournamentState.setCurrentRound(p.getRounds().size());
-                    isTournamentStateRundNrSet = true;
-                }
-            }
+//            if (!isTournamentStateRundNrSet) {
+//                if (lastRound.result() == '1' || lastRound.result() == '=' || lastRound.result() == '0') {
+//                    tournamentState.setCurrentRound(p.getRounds().size());
+//                    isTournamentStateRundNrSet = true;
+//                }
+//            }
 
         }
 

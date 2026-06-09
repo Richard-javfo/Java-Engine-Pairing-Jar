@@ -10,7 +10,7 @@ import java.util.Map;
 import trf.api.BakuRound;
 import trf.api.Round;
 import trf.api.TournamentPlayer;
-import trf.impl.TRFJavafoPairingProvider;
+import trf.api.TRFJavafoPairingProvider;
 
 /**
  *

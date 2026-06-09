@@ -34,7 +34,7 @@ public class SonnebornBerger extends FideTieBreakService {
     
     
     @Override
-    public double calculate(TournamentPlayer p, Map<Integer, TournamentPlayer> allPlayers, int totalRounds,int actualRounds) {
+    public double calculate(TournamentPlayer p, Map<Integer, TournamentPlayer> allPlayers, int totalRounds) {
         
         
         List<OpponentData> opData = getSortedOpponentData(p, allPlayers, totalRounds);

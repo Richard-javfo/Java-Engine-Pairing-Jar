@@ -18,21 +18,10 @@ import trf.api.TournamentPlayer;
  */
 public  abstract class FideTieBreakService implements TiebreakStrategy {
 
-    public List<OpponentData> getSortedOpponentData(TournamentPlayer p, Map<Integer, TournamentPlayer> allPlayers, int totalRounds,int actualRounds) {
+    public List<OpponentData> getSortedOpponentData(TournamentPlayer p, Map<Integer, TournamentPlayer> allPlayers, int totalRounds) {
         List<OpponentData> opponentList = new ArrayList<>();
         double runningScore = 0.0;
-        
-        if(actualRounds > p.getRounds().size())
-            
-                try {
-                    throw new Exception("Player has missing rounds");
-        } catch (Exception ex) {
-                    // Gibt den Klassennamen und die Fehlermeldung aus
-    System.out.println("ERROR in TRFJavafoPairingProvider: " + ex.getMessage());
-    // Druckt den kompletten Stacktrace in das Logcat/Konsole (sehr wichtig für die Fehlersuche!)
-    ex.printStackTrace();
-        }
-         
+          
 
         for (int i = 0; i < p.getRounds().size(); i++) {
             Round r = p.getRounds().get(i);

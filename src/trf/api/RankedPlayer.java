@@ -14,7 +14,7 @@ import java.util.List;
  */
 public record RankedPlayer(
        
-        int currentRound, 
+        //int currentRound, 
         TournamentInfo tournamentInfo,
         TournamentPlayer player ,
         double points,

@@ -30,8 +30,8 @@ public class Buchholz extends FideTieBreakService {
     }
 
     @Override
-    public double calculate(TournamentPlayer p, Map<Integer, TournamentPlayer> allPlayers, int totalRounds,int actualRounds) {
-        List<OpponentData> opData = getSortedOpponentData(p, allPlayers, totalRounds,actualRounds);
+    public double calculate(TournamentPlayer p, Map<Integer, TournamentPlayer> allPlayers, int totalRounds) {
+        List<OpponentData> opData = getSortedOpponentData(p, allPlayers, totalRounds);
 
         // Die Anzahl der verbleibenden Elemente nach dem "Abschneiden" unten
         int remaining = opData.size() - discardLowest - discardHighest;

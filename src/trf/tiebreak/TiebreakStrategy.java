@@ -28,6 +28,6 @@ public interface TiebreakStrategy {
     record OpponentData(Round round, double opponentPoints) {}
 
   
-    List<OpponentData> getSortedOpponentData(TournamentPlayer p, Map<Integer, TournamentPlayer> allPlayers,int totalRounds,int actualRounds);
-    double calculate(TournamentPlayer p, Map<Integer, TournamentPlayer> allPlayers,int totalrounds,int actualRoung);
+    List<OpponentData> getSortedOpponentData(TournamentPlayer p, Map<Integer, TournamentPlayer> allPlayers,int totalRounds);
+    double calculate(TournamentPlayer p, Map<Integer, TournamentPlayer> allPlayers,int totalrounds);
 }
