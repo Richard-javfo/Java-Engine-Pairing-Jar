@@ -18,7 +18,7 @@ import java.util.Map;
 import trf.api.BakuRound;
 import trf.api.Round;
 import trf.api.TournamentPlayer;
-import trf.impl.TournamentState;
+import trf.api.TournamentState;
 
 /**
  *
@@ -59,7 +59,7 @@ public interface TrfParser {
 
         TournamentState tournamentState = new TournamentState(info);
 
-        return validateRound(tournamentState, players);
+        return tournamentState;
     }
 
     private static void parseBakuLine(String line, TournamentInfoImpl info){
@@ -88,7 +88,8 @@ public interface TrfParser {
             
         }
         //System.out.println("parseBaku " + bakuRounds.toString());
-        info.getBakuRounds().put(startRank,bakuRounds);
+        
+        info.getTournamentPlayers().get(startRank).getBakuRounds().addAll(bakuRounds);
     }
     
     private static void parseHeaderLine(String line, TournamentInfoImpl info) {
@@ -136,26 +137,26 @@ public interface TrfParser {
         }
     }
 
-    private static TournamentState validateRound(TournamentState tournamentState, Map<Integer, TournamentPlayer> players) {
-        Boolean isTournamentStateRundNrSet = false;
-        for (TournamentPlayer p : players.values()) {
-
-            if (p.getRounds() == null || p.getRounds().size() == 0) {
-                return tournamentState;
-            }
-            Round lastRound = p.getRounds().get(p.getRounds().size() - 1);
-
-//            if (!isTournamentStateRundNrSet) {
-//                if (lastRound.result() == '1' || lastRound.result() == '=' || lastRound.result() == '0') {
-//                    tournamentState.setCurrentRound(p.getRounds().size());
-//                    isTournamentStateRundNrSet = true;
-//                }
+//    private static TournamentState validateRound(TournamentState tournamentState, Map<Integer, TournamentPlayer> players) {
+//        Boolean isTournamentStateRundNrSet = false;
+//        for (TournamentPlayer p : players.values()) {
+//
+//            if (p.getRounds() == null || p.getRounds().size() == 0) {
+//                return tournamentState;
 //            }
-
-        }
-
-        return tournamentState;
-    }
+//            Round lastRound = p.getRounds().get(p.getRounds().size() - 1);
+//
+////            if (!isTournamentStateRundNrSet) {
+////                if (lastRound.result() == '1' || lastRound.result() == '=' || lastRound.result() == '0') {
+////                    tournamentState.setCurrentRound(p.getRounds().size());
+////                    isTournamentStateRundNrSet = true;
+////                }
+////            }
+//
+//        }
+//
+//        return tournamentState;
+//    }
 
     private static TournamentPlayer parseLineToPlayer(String line) {
         JavaTournamentPlayer player = new JavaTournamentPlayer();

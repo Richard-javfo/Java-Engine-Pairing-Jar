@@ -48,27 +48,27 @@ public class JavaTournamentPlayer implements TournamentPlayer{
     private List<Round> rounds;
     private List<BakuRound> bakuRounds;
 
-    public JavaTournamentPlayer(int rounds) {
-        this.rounds = new ArrayList(rounds);
-        this.startRank = NO_START_RANK;
-    }
+//    public JavaTournamentPlayer(int rounds) {
+//        this.rounds = new ArrayList(rounds);
+//        this.startRank = NO_START_RANK;
+//    }
 
     public void setBakuRounds(List<BakuRound> bakuRounds) {
         this.bakuRounds = bakuRounds;
     }
     
-     public JavaTournamentPlayer(int startRank,String name,int rounds) {
-        this.rounds = new ArrayList(rounds);
-        this.startRank = startRank;
-        this.name = name;
-    }
+//     public JavaTournamentPlayer(int startRank,String name,int rounds) {
+//        this.rounds = new ArrayList(rounds);
+//        this.startRank = startRank;
+//        this.name = name;
+//    }
     
-    public JavaTournamentPlayer(String spieler_A, int elo, int nationalElo) {
-        
-        this(7);
-        this.elo = elo;
-        this.nationalElo = nationalElo;
-    }
+//    public JavaTournamentPlayer(String spieler_A, int elo, int nationalElo) {
+//        
+//        this(7);
+//        this.elo = elo;
+//        this.nationalElo = nationalElo;
+//    }
 
     public JavaTournamentPlayer() {
     }
@@ -143,6 +143,8 @@ public class JavaTournamentPlayer implements TournamentPlayer{
     
      @Override
     public List<BakuRound> getBakuRounds() {
+        if(bakuRounds == null)
+            bakuRounds = new ArrayList<>(6);
         return bakuRounds;
     }
     

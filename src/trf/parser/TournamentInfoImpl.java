@@ -133,11 +133,5 @@ public class TournamentInfoImpl implements TournamentInfo {
         return players;
     }
 
-    @Override
-    public Map<Integer, List<BakuRound>> getBakuRounds() {
-       
-        return bakuRounds;
-
-    }
-        
+            
 }

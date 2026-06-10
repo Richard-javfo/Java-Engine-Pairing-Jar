@@ -25,7 +25,6 @@ import trf.api.TournamentInfo;
 import trf.api.PairingListener;
 import trf.api.TournamentPlayer;
 import trf.impl.JavaTournamentPlayer;
-import trf.impl.TournamentState;
 import trf.parser.FlexibleDateParser;
 
 /**
@@ -55,11 +54,7 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
         return new ArrayList<>(this.tournamentInfo.getTournamentPlayers().values());
     }
 
-    public List<List<BakuRound>> getBakuRounds() {
-
-        return new ArrayList<>(this.tournamentInfo.getBakuRounds().values());
-    }
-
+    
     private void writeHeader(PrintWriter writer, TournamentInfo ti) throws Exception {
         writeHeader(writer, ti, null);
     }
@@ -187,10 +182,11 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
                 writer.print("\r\n");
 
             }
-            List<List<BakuRound>> bakus = this.getBakuRounds();
-            for (List<BakuRound> playersBakus : bakus) {
+           
+            for (int i = 0; i < players.size(); i++) {
+                TournamentPlayer p = players.get(i);
                 
-                writeTrfLine(playersBakus, writer);
+                writeTrfLine(p.getBakuRounds(), writer);
                 writer.print("\r\n");
             }
 
