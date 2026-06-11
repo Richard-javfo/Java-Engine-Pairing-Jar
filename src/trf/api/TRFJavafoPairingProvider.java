@@ -54,7 +54,6 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
         return new ArrayList<>(this.tournamentInfo.getTournamentPlayers().values());
     }
 
-    
     private void writeHeader(PrintWriter writer, TournamentInfo ti) throws Exception {
         writeHeader(writer, ti, null);
     }
@@ -126,7 +125,7 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
 
         // In den Writer schreiben
         writer.print(sb.toString());
-        
+
     }
 
     private void writeTrfLine(List<BakuRound> playersBakus, PrintWriter writer) {
@@ -146,7 +145,6 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
 
         }
         writer.print(sb.toString());
-        
 
     }
 
@@ -172,22 +170,23 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
 
             for (int i = 0; i < players.size(); i++) {
                 TournamentPlayer p = players.get(i);
-                //p.setActualRank(i + 1);
-//                if (p.getStartRank() == JavaTournamentPlayer.NO_START_RANK) {
-//                    p.setStartRank(p.getActualRank());
-//                }
+
+                setBakuRounds(p);
+
                 p.calculatePoints();
                 writeTrfLine(p, writer);
 
                 writer.print("\r\n");
 
             }
-           
-            for (int i = 0; i < players.size(); i++) {
-                TournamentPlayer p = players.get(i);
-                
-                writeTrfLine(p.getBakuRounds(), writer);
-                writer.print("\r\n");
+
+            if (!players.getFirst().getBakuRounds().isEmpty()) {
+                for (int i = 0; i < players.size(); i++) {
+                    TournamentPlayer p = players.get(i);
+
+                    writeTrfLine(p.getBakuRounds(), writer);
+                    writer.print("\r\n");
+                }
             }
 
             writer.flush();
@@ -360,6 +359,24 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
 
     public void setPairingListener(PairingListener l) {
         this.listener = l;
+    }
+
+    private void setBakuRounds(TournamentPlayer player) {
+        player.getBakuRounds().clear();
+        BakuStrategy baku = tournamentInfo.getBakuStrategy();
+        if (baku.equals(BakuStrategy.DISABLED)) {
+            return;
+        }
+        int lastRound = player.getRounds().size();
+
+        for (int roundNr = 1; roundNr <= lastRound + 1; roundNr++) {
+
+            double points = baku.calculatePoints(player.getStartRank(), this.getTournamentPlayers().size(), roundNr);
+
+            player.getBakuRounds().add(new BakuRound(player.getStartRank(), roundNr, points));
+
+        }
+
     }
 
 }

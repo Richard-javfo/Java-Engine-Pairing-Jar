@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import trf.api.BakuRound;
+import trf.api.BakuStrategy;
 import trf.api.TournamentInfo;
 import trf.api.TournamentPlayer;
 import trf.tiebreak.TiebreakStrategy;
@@ -22,29 +23,45 @@ import trf.tiebreak.TiebreakStrategy;
  */
 public class TournamentInfoImpl implements TournamentInfo {
 
-   public  String tournamentName;
-   public  String city;
-   public  String federation;
-   public  LocalDate startDate;
-   public  LocalDate endDate;
-   public  String type;
-   public  String chiefArbiter;
-   public  String deputyArbiter;
-   public  String timeControl;
-   public  int totalRounds;
-   public  List<String> engineConfigs = new ArrayList<>();
- 
-   public  final List<LocalDate> roundDates = new ArrayList<>();
-   public  final List<String> forbiddenPairs = new ArrayList<>();
-   public  final List<TiebreakStrategy> tiebreakStrategies = new ArrayList<>();
-   public  String extraOptions = "";
-   public  Map<Integer, TournamentPlayer> players;
-   public  Map<Integer, List<BakuRound>> bakuRounds = new HashMap<>();
+    public String tournamentName;
+    public String city;
+    public String federation;
+    public LocalDate startDate;
+    public LocalDate endDate;
+    public String type;
+    public String chiefArbiter;
+    public String deputyArbiter;
+    public String timeControl;
+    public int totalRounds;
+    public List<String> engineConfigs = new ArrayList<>();
+
+    public final List<LocalDate> roundDates = new ArrayList<>();
+    public final List<String> forbiddenPairs = new ArrayList<>();
+    public final List<TiebreakStrategy> tiebreakStrategies = new ArrayList<>();
+    public String extraOptions = "";
+    public Map<Integer, TournamentPlayer> players;
+    public Map<Integer, List<BakuRound>> bakuRounds = new HashMap<>();
+    private BakuStrategy bakuStrategy;
 
     public TournamentInfoImpl(Map<Integer, TournamentPlayer> players) {
         this.players = players;
+        this.bakuStrategy = BakuStrategy.DISABLED;
     }
 
+    public TournamentInfoImpl(TournamentInfo info, BakuStrategy bakuStrategy) {
+        this.tournamentName = info.getTournamentName();
+        this.city = info.getCity();
+        this.federation = info.getFederation();
+        this.startDate = info.getStartDate();
+        this.endDate = info.getEndDate();
+        this.type = info.getType();
+        this.chiefArbiter = info.getChiefArbiter();
+        this.deputyArbiter = info.getDeputyArbiter();
+        this.timeControl = info.getTimeControl();
+        this.totalRounds = info.getTotalRounds();
+        this.players = info.getTournamentPlayers();
+        this.bakuStrategy = bakuStrategy;
+    }
 
     // --- Getter Implementierungen ---
     @Override
@@ -103,7 +120,7 @@ public class TournamentInfoImpl implements TournamentInfo {
     }
 
     @Override
-    public List<String>getEngineConfigsXXC() {
+    public List<String> getEngineConfigsXXC() {
         return engineConfigs;
     }
 
@@ -119,7 +136,7 @@ public class TournamentInfoImpl implements TournamentInfo {
 
     @Override
     public String getTournamentID() {
-       return "TRF-Turnier-Import-"+OffsetDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        return "TRF-Turnier-Import-" + OffsetDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
     }
 
     @Override
@@ -133,5 +150,9 @@ public class TournamentInfoImpl implements TournamentInfo {
         return players;
     }
 
-            
+    @Override
+    public BakuStrategy getBakuStrategy() {
+        return bakuStrategy;
+    }
+
 }

@@ -45,6 +45,8 @@ import trf.tiebreak.TiebreakStrategy;
         //public void parseHeaderLine(String line);
         Map<Integer,TournamentPlayer> getTournamentPlayers();
         
+        BakuStrategy getBakuStrategy();
+        
 
     }
 
