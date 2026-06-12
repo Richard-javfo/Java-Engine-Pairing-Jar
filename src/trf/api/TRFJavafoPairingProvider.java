@@ -246,13 +246,12 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
                 option = 1000;
             }
 
-            System.out.println("javafo engine Option = " + option);
+           
             JaVaFoApi.exec(option, this.tournamentInfo.getTournamentName(), inputStream, pairingOutputStream);
 
             // 6. Ergebnis direkt aus dem RAM lesen
             result = pairingOutputStream.toString();
-            System.out.println("Ergebnis der Paarung");
-            System.out.println(result);
+            
 
         } catch (Exception ex) {
             // Gibt den Klassennamen und die Fehlermeldung aus
