@@ -136,7 +136,8 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
         StringBuilder sb = new StringBuilder(12 + playersBakus.size() * 5);
         sb.append("XXA");
 
-        sb.append(String.format(" %4d", playersBakus.getFirst().playerStartRank()));
+        sb.append(String.format(" %4d", playersBakus.get(0).playerStartRank())
+        );
 
         for (BakuRound bakuRound : playersBakus) {
             sb.append("  ");
@@ -180,7 +181,7 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
 
             }
 
-            if (!players.getFirst().getBakuRounds().isEmpty()) {
+            if (!players.isEmpty() && !players.get(0).getBakuRounds().isEmpty()) {
                 for (int i = 0; i < players.size(); i++) {
                     TournamentPlayer p = players.get(i);
 
@@ -250,6 +251,8 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
 
             // 6. Ergebnis direkt aus dem RAM lesen
             result = pairingOutputStream.toString();
+            System.out.println("Ergebnis der Paarung");
+            System.out.println(result);
 
         } catch (Exception ex) {
             // Gibt den Klassennamen und die Fehlermeldung aus
