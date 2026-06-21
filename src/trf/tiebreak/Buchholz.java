@@ -16,17 +16,12 @@ import trf.impl.JavaTournamentPlayer;
 
 public class Buchholz extends FideTieBreakService {
 
-    private final int discardLowest;
-    private final int discardHighest;
-
-    public Buchholz(int discardLowest, int discardHighest) {
-        this.discardLowest = discardLowest;
-        this.discardHighest = discardHighest;
+    public Buchholz() {
+        super();
     }
 
-    public Buchholz() {
-        this.discardLowest = 0;
-        this.discardHighest = 0;
+    public Buchholz(int l, int h) {
+        super(l,h);
     }
 
     @Override
@@ -34,10 +29,10 @@ public class Buchholz extends FideTieBreakService {
         List<OpponentData> opData = getSortedOpponentData(p, allPlayers, totalRounds);
 
         // Die Anzahl der verbleibenden Elemente nach dem "Abschneiden" unten
-        int remaining = opData.size() - discardLowest - discardHighest;
+        int remaining = opData.size() - this.getDiscardLowest() - this.getDiscardHighest();
 
         return opData.stream()
-                .skip(discardLowest) // Schneidet die X kleinsten ab
+                .skip(getDiscardLowest()) // Schneidet die X kleinsten ab
                 .limit(Math.max(0, remaining)) // Behält nur die mittleren N Elemente
                 .mapToDouble(OpponentData::opponentPoints) // DIREKTER Zugriff auf den Record-Wert
                 .sum();
@@ -45,7 +40,7 @@ public class Buchholz extends FideTieBreakService {
 
     @Override
     public String getLabel() {
-        return ("Buchholz" + discardLowest + "" + discardHighest);
+        return ("Buchholz" + getDiscardLowest() + "" + getDiscardHighest());
     }
 
     

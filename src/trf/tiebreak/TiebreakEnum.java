@@ -23,6 +23,9 @@ public enum TiebreakEnum {
     SONNEBORN_BERGER_20(2, 0, "Sonneborn-Berger (2 Streichresultate)"),
 
     // --- WEITERE FEINWERTUNGEN ---
+    NATIONAL_ELO_AVARAGE(0,0,"Nationale Elopunkte der Gegner"),
+    ELO_AVARAGE(0,0,"Elopunkte der Gegner"),
+    MIXED_ELO_AVARAGE(0,0,"Max Elopunkte FIDE und National der Gegner"),
     DIRECT_ENCOUNTER(0, 0, "Direkter Vergleich"),
     CUMULATIVE(0, 0, "Fortschrittswertung (Summenscore)"),
     NUMBER_OF_WINS(0, 0, "Anzahl der Siege"),

@@ -4,12 +4,8 @@
  */
 package trf.tiebreak;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import trf.api.Round;
 import trf.api.TournamentPlayer;
 
@@ -29,5 +25,6 @@ public interface TiebreakStrategy {
 
   
     List<OpponentData> getSortedOpponentData(TournamentPlayer p, Map<Integer, TournamentPlayer> allPlayers,int totalRounds);
+    
     double calculate(TournamentPlayer p, Map<Integer, TournamentPlayer> allPlayers,int totalrounds);
 }

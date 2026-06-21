@@ -12,7 +12,7 @@ public enum ChessResult {
     // Standard
     WHITE_WIN('1'),
     DRAW('='),
-    BLACK_WINS('0'),
+    BLACK_WIN('0'),
     // Forfeit / Kampflos
     FORFEIT_WHITE_WIN('+'),
     FORFEIT_BLACK_WIN('-'),
@@ -64,7 +64,7 @@ public enum ChessResult {
         return switch (this) {
             case WHITE_WIN ->
                 "0";
-            case BLACK_WINS ->
+            case BLACK_WIN ->
                 "1";
             case DRAW ->
                 "=";
@@ -103,9 +103,9 @@ public enum ChessResult {
 
         return switch (trfResultString.toUpperCase()) {
             case "1" ->
-                isWhite ? ChessResult.WHITE_WIN : ChessResult.BLACK_WINS;
+                isWhite ? ChessResult.WHITE_WIN : ChessResult.BLACK_WIN;
             case "0" ->
-                isWhite ? ChessResult.BLACK_WINS : ChessResult.WHITE_WIN;
+                isWhite ? ChessResult.BLACK_WIN : ChessResult.WHITE_WIN;
             case "=" ->
                 ChessResult.DRAW;
             case "U" ->

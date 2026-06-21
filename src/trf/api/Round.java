@@ -48,4 +48,23 @@ public record Round(int roundNr, int opponentStartRank, char color, char result)
                 0.0;
         };
     }
+    
+     public Boolean isWin() {
+        return switch (result) {
+            case '1', 'W', 'w', '+', 'F', 'f', 'U', 'u' ->
+                true;
+           
+            default ->
+               false;
+        };
+    }
+     
+    public Boolean isBlack()
+    {
+        
+        return color == 'b' || color == 'B';
+    }
+    
+    
+    
 }

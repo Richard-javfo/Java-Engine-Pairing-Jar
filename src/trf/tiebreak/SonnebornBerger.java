@@ -18,19 +18,16 @@ import trf.api.TournamentPlayer;
  */
 public class SonnebornBerger extends FideTieBreakService {
 
-    
-    private final int discardLowest;
-    private final int discardHighest;
-
     public SonnebornBerger(int discardLowest, int discardHighest) {
-        this.discardLowest = discardLowest;
-        this.discardHighest = discardHighest;
+        super(discardLowest, discardHighest);
     }
 
     public SonnebornBerger() {
-        this.discardLowest = 0;
-        this.discardHighest = 0;
+        super();
     }
+
+    
+   
     
     
     @Override
@@ -40,10 +37,10 @@ public class SonnebornBerger extends FideTieBreakService {
         List<OpponentData> opData = getSortedOpponentData(p, allPlayers, totalRounds);
 
         // Die Anzahl der verbleibenden Elemente nach dem "Abschneiden" unten
-        int remaining = opData.size() - discardLowest - discardHighest;
+        int remaining = opData.size() - this.getDiscardLowest() - this.getDiscardHighest();
     // Wir holen uns die Liste (Sortierung ist hier egal, aber schadet nicht)
         return opData.stream()
-                .skip(discardLowest) // Schneidet die X kleinsten ab
+                .skip(this.getDiscardLowest()) // Schneidet die X kleinsten ab
                 .limit(Math.max(0, remaining)) // Behält nur die mittleren N Elemente
                 .mapToDouble(data -> {
                     char res = data.round().result();
@@ -116,6 +113,6 @@ public class SonnebornBerger extends FideTieBreakService {
 
     @Override
     public String getLabel() {
-        return ("SB" + discardLowest + "" + discardHighest);
+        return ("SB" + this.getDiscardLowest() + "" + this.getDiscardHighest());
     }
 }

@@ -16,8 +16,19 @@ import trf.api.TournamentPlayer;
  *
  * @author DP
  */
-public  abstract class FideTieBreakService implements TiebreakStrategy {
+public  abstract class FideTieBreakService extends DiscardTiebreak {
 
+    public FideTieBreakService(int discardLowest, int discardHighest) {
+        super(discardLowest, discardHighest);
+    }
+
+    public FideTieBreakService() {
+        super();
+    }
+
+    
+    
+    @Override
     public List<OpponentData> getSortedOpponentData(TournamentPlayer p, Map<Integer, TournamentPlayer> allPlayers, int totalRounds) {
         List<OpponentData> opponentList = new ArrayList<>();
         double runningScore = 0.0;
