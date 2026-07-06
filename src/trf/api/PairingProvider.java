@@ -5,6 +5,7 @@
 package trf.api;
 
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import trf.impl.JavaTournamentPlayer;
 import java.util.List;
 import java.util.Map;
@@ -26,4 +27,6 @@ public interface PairingProvider {
    void setTournamentInfo(TournamentInfo info);
    
    void generateInitialTrf(OutputStream out);
+   
+   void generateInitialTrf(OutputStream out,Charset charset );
 }

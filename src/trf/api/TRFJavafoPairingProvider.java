@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -149,10 +150,9 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
 
     }
 
-    // In deinem Generator-JAR
     @Override
-    public void generateInitialTrf(OutputStream out) {
-        try {
+    public void generateInitialTrf(OutputStream out, Charset charset ) {
+         try {
 
             List<TournamentPlayer> players = this.getTournamentPlayers();
             if (players == null || players.size() == 0) {
@@ -163,12 +163,11 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
             this.tournamentState.updateRanking();
 
             // Wir bleiben bei UTF-8, aber wir kontrollieren die Byte-Breite manuell
-            OutputStreamWriter osw = new OutputStreamWriter(out, StandardCharsets.UTF_8);
+            OutputStreamWriter osw = new OutputStreamWriter(out, charset);
             PrintWriter writer = new PrintWriter(osw);
 
             writeHeader(writer, this.tournamentState.getInfo(), players);
-            //writeHeader(writer, tournamentInfo);
-
+           
             for (int i = 0; i < players.size(); i++) {
                 TournamentPlayer p = players.get(i);
 
@@ -198,6 +197,12 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
             ex.printStackTrace();
             this.notifyError("ERROR in TRFJavafoPairingProvider: " + ex.getMessage(), ex.toString());
         }
+    }
+    
+    // In deinem Generator-JAR
+    @Override
+    public void generateInitialTrf(OutputStream out) {
+         generateInitialTrf(out,StandardCharsets.UTF_8);
     }
 
     private String countRated(List<TournamentPlayer> players) {
@@ -380,5 +385,7 @@ public class TRFJavafoPairingProvider extends AbstractPairingProvider {
         }
 
     }
+
+    
 
 }
